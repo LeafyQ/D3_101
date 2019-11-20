@@ -1,0 +1,69 @@
+<body>
+	<h2>[D3 In 20 Days] Day 1: Scatter Plot</h2>
+
+	<p>
+		<code>d3.extent()</code> will return the [min, max] from the target object list.
+	</p>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="https://d3js.org/d3-selection-multi.v1.min.js">//INCLUDE this one for multiple selection</script>
+	<script type="text/javascript">
+		// load data
+		const data =[{value: 0,x: 50,y: 13,}, 
+					 {value: 3,x: 150,y: 63,}, 
+					 {value: 5,x: 250,y: 93,}, 
+					 {value: 7,x: 100,y: 313,}, 
+					 {value: 9,x: 150,y: 213,}]
+		const bound = d3.extent(data,d=>d.value)
+		const linear_scale = d3.scaleLinear()
+							   .domain(bound)
+								.range([10,100])
+		console.log(bound)
+		// plot
+		const svg = d3.select('p').append('svg')
+						.attrs({width:'100%',height:'100%'})
+		svg.selectAll('circle')
+			.data(data).enter()
+			.append('circle')
+				.attrs({
+					cx:d=>d.x,
+					cy:d=>d.y,
+					r:d=>{return linear_scale(d.value)},
+					fill:'navy',
+					opacity:0.5
+				})
+
+
+	</script>
+	<p>
+		The code that generate the picture:
+	</p>
+	<pre>
+	<code>
+const data =[{value: 0,x: 50,y: 13,}, 
+	{value: 3,x: 150,y: 63,}, 
+	{value: 5,x: 250,y: 93,}, 
+	{value: 7,x: 100,y: 313,}, 
+	{value: 9,x: 150,y: 213,}]
+const bound = d3.extent(data,d=>d.value)
+const linear_scale = d3.scaleLinear()
+			.domain(bound)
+			.range([10,100])
+// plot
+const svg = d3.select('p').append('svg')
+		.attrs({width:'100%',height:'100%'})
+svg.selectAll('circle')
+	.data(data).enter()
+	.append('circle')
+		.attrs({
+			cx:d=>d.x,
+			cy:d=>d.y,
+			r:d=>{return linear_scale(d.value)},
+			fill:'navy',
+			opacity:0.5
+		})
+
+	</code>
+	</pre>
+
+
+</body>
