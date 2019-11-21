@@ -1,0 +1,94 @@
+<style type="text/css">
+
+</style>
+<head>
+	<title>
+		Day 2
+	</title>	
+</head>
+<body>
+	<h2>[D3 In 20 Days] Day 2: Bar Chart</h2>
+
+	<p>
+		When plotting in D3, we usually follow the default margin-- leaving some room for the possible axises<code>var margin = {top:,left:,bottom:,right:}</code> The dictionary specify the pixels away from top, left, bottom, right points clockwise. We then bundle svg and axis in a `group`, or <code>g</code> tag.
+	</p>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="https://d3js.org/d3-selection-multi.v1.min.js">//INCLUDE this one for multiple selection</script>
+	<script type="text/javascript">
+		// set up d3 margin default
+		const w = 400;
+		const h = 200;
+		const margin = {top:20,right:20,bottom:20,left:30};
+		const inner_w = w-margin.right-margin.left;
+		const inner_h = h-margin.top-margin.bottom;
+
+		var n = 10;
+		const data = new Array(n);
+		const idx  = new Array(n);
+		for (let i = 0; i < n; i++) {
+		  data[i]=(Number.parseInt(Math.random() * inner_h)); // data.push() is not optimized
+		  idx[i]=i+1;
+		}
+
+
+		const svg = d3.select('body').append('svg')
+						.attrs({
+							height:h,
+							width:w
+						});
+		// set inner boundary group
+		const g = svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`)
+
+		g.selectAll('rect')
+		  .data(data)
+		  .enter()
+		  .append('rect')
+		  .attrs({
+		    height: d => d,
+		    width: inner_w/n-3,
+		    x: (_, i) => i*inner_w/n,
+		    y: d => inner_h - d,
+		    fill: '#4A90E2'
+		  })
+		  //Impletation of the :hover
+		  .on('mouseout', function() {
+		    d3.select(this)
+		      .attr('fill', '#4A90E2')
+		  })
+		  .on('mouseover', function() {
+		    d3.select(this)
+		      .attr('fill', '#03336B')
+		  })
+
+		  g.selectAll('text')
+		  	.data(data).enter()
+		  	.append('text')
+		  	.text(d=>d)
+		  	.attrs({
+		  		x:(_, i) => (i+0.3)*inner_w/n,
+		    	y: d => inner_h - d-5,
+		    	opacity:0.5
+		  	});
+
+		 console.log(d3.max(data))
+		 var y = d3.scaleLinear().domain([0, inner_h]).range([inner_h,0]); 
+		 var x = d3.scaleBand().domain(idx).range([0,inner_w]);
+		 g.append('g')
+		 .call(d3.axisLeft(y)); // draw y axis
+	  	
+	  	g.append("g")
+	      .attr("transform", `translate(${0},${inner_h})`) // the default is at the top
+	      .call(d3.axisBottom(x)); // draw x, make the TEXT show at the buttom
+
+	</script>
+	<p>
+		The code that generate the picture:
+	</p>
+	<pre>
+	<code>
+
+	</code>
+	</pre>
+
+
+</body>
